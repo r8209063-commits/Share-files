@@ -1,6 +1,32 @@
 const express = require('express');
 const multer = require('multer');
 const path = require('path');
+
+const app = express();
+const port = process.env.PORT || 3000;
+
+// Middleware untuk serve file statis (html, css, js)
+app.use(express.static(__dirname));
+
+// Atur folder tujuan upload
+const upload = multer({ dest: 'uploads/' });
+
+// Tampilkan index.html saat buka "/"
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'));
+});
+
+// Endpoint upload
+app.post('/upload', upload.single('file'), (req, res) => {
+  res.send('File berhasil diupload!');
+});
+
+app.listen(port, () => {
+  console.log(`Server jalan di http://localhost:${port}`);
+});
+const express = require('express');
+const multer = require('multer');
+const path = require('path');
 const fs = require('fs');
 
 const app = express();
